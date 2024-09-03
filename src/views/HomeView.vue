@@ -8,29 +8,33 @@
     </div>
 
     <div v-if="weather" class="weather-details">
-      <p class="location">Location: {{ weather.name }}</p>
-      <p class="temperature">Temperature: {{ weather.main.temp }} °C</p>
-      <p class="humidity">Humidity: {{ weather.main.humidity }}%</p>
-      <p class="wind-speed">Wind Speed: {{ weather.wind.speed }} m/s</p>
-      <p class="day-of-week">Day: {{ getDayOfWeek() }}</p>
-      <p class="local-time">Local Time: {{ getLocalTime() }}</p>
-      <p class="description">Weather: {{ weather.weather[0].description }}</p>
-      <img :src="'http://openweathermap.org/img/wn/' + weather.weather[0].icon + '@2x.png'" alt="Weather Icon"
-        class="weather-icon" />
+      <div class="main-info">
+        <h3 class="location">{{ weather.name }}</h3>
+        <p class="temperature">{{ weather.main.temp }}°C</p>
+        <img :src="'http://openweathermap.org/img/wn/' + weather.weather[0].icon + '@2x.png'" alt="Weather Icon"
+          class="weather-icon" />
+      </div>
+      <div class="additional-info">
+        <p class="description">{{ weather.weather[0].description }}</p>
+        <p class="humidity">Humidity: {{ weather.main.humidity }}%</p>
+        <p class="wind-speed">Wind Speed: {{ weather.wind.speed }} m/s</p>
+        <p class="day-of-week">Day: {{ getDayOfWeek() }}</p>
+        <p class="local-time">Local Time: {{ getLocalTime() }}</p>
+      </div>
     </div>
 
     <!-- Hourly and Daily Forecasts -->
     <div v-if="hourlyForecast.length" class="forecast-container">
       <h3 class="forecast-title">Hourly Forecast</h3>
       <div class="forecast-hourly" v-for="forecast in hourlyForecast" :key="forecast.dt">
-        <p>{{ getHour(forecast.dt_txt) }}: {{ forecast.main.temp }} °C, {{ forecast.weather[0].description }}</p>
+        <p>{{ getHour(forecast.dt_txt) }}: {{ forecast.main.temp }}°C, {{ forecast.weather[0].description }}</p>
       </div>
     </div>
 
     <div v-if="dailyForecast.length" class="forecast-container">
       <h3 class="forecast-title">Daily Forecast</h3>
       <div class="forecast-daily" v-for="forecast in dailyForecast" :key="forecast.dt">
-        <p>{{ getDayOfWeek(forecast.dt_txt) }}: {{ forecast.main.temp }} °C, {{ forecast.weather[0].description }}</p>
+        <p>{{ getDayOfWeek(forecast.dt_txt) }}: {{ forecast.main.temp }}°C, {{ forecast.weather[0].description }}</p>
       </div>
     </div>
   </div>
@@ -118,15 +122,17 @@ export default {
   max-width: 600px;
   margin: auto;
   padding: 20px;
-  border-radius: 8px;
-  background: linear-gradient(to right, #e0f7fa, #b2ebf2);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  background: linear-gradient(to right, #74ebd5, #acb6e5);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  font-family: 'Arial', sans-serif;
 }
 
 .title {
   text-align: center;
-  color: #00796b;
-  font-family: 'Arial', sans-serif;
+  color: #004d40;
+  font-weight: bold;
+  font-size: 24px;
 }
 
 .input-section {
@@ -139,65 +145,102 @@ export default {
 .label {
   margin-bottom: 8px;
   color: #004d40;
-  font-family: 'Arial', sans-serif;
+  font-size: 16px;
 }
 
 .input {
   padding: 10px;
-  border-radius: 4px;
+  border-radius: 8px;
   border: 1px solid #004d40;
   margin-bottom: 10px;
   font-size: 16px;
+  width: 80%;
+  max-width: 400px;
 }
 
 .button {
   padding: 10px 20px;
-  background-color: #00796b;
+  background-color: #004d40;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
   font-size: 16px;
 }
 
 .button:hover {
-  background-color: #004d40;
+  background-color: #00251a;
 }
 
 .weather-details {
   text-align: center;
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
 }
 
-.location,
-.temperature,
-.humidity,
-.wind-speed,
-.day-of-week,
-.local-time,
-.description {
+.main-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.location {
+  font-size: 28px;
+  font-weight: bold;
   color: #004d40;
-  font-family: 'Arial', sans-serif;
+}
+
+.temperature {
+  font-size: 48px;
+  font-weight: bold;
+  color: #e65100;
+  margin: 10px 0;
 }
 
 .weather-icon {
-  margin-top: 10px;
+  width: 80px;
+  height: 80px;
+}
+
+.additional-info {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.description,
+.humidity,
+.wind-speed,
+.day-of-week,
+.local-time {
+  font-size: 16px;
+  color: #004d40;
 }
 
 .forecast-container {
   margin-top: 20px;
+  padding: 20px;
+  background: rgb(255, 255, 255);
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .forecast-title {
   text-align: center;
-  color: #00796b;
-  font-family: 'Arial', sans-serif;
+  color: #004d40;
+  font-weight: bold;
+  font-size: 20px;
 }
 
 .forecast-hourly,
 .forecast-daily {
   color: #004d40;
-  font-family: 'Arial', sans-serif;
-  text-align: center;
+  font-size: 16px;
   margin-top: 10px;
+  text-align: center;
 }
 </style>
