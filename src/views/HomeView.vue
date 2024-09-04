@@ -10,7 +10,7 @@
     <div v-if="weather" class="weather-details">
       <div class="main-info">
         <h3 class="location">{{ weather.name }}</h3>
-        <p class="temperature">{{ weather.main.temp }}°C</p>
+        <p class="temperature">{{ rountTemp(weather.main.temp) }}°C</p>
         <img :src="'http://openweathermap.org/img/wn/' + weather.weather[0].icon + '@2x.png'" alt="Weather Icon"
           class="weather-icon" />
       </div>
@@ -53,6 +53,9 @@ export default {
     };
   },
   methods: {
+     rountTemp(temp) {
+      return Math.round(temp);
+    },
     async fetchWeather() {
       const apiKey = 'e945d7f71eb0e5e621a7dfcce2cb1a43'; // Your API key
 
